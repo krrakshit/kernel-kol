@@ -30,10 +30,10 @@ export class Game {
     }
     makeMove(socket: WebSocket, move: {from: string,to: string}) {
 
-        if(this.board.moves.length %2 === 0 && socket !== this.player1) {
+        if(this.board.moves().length %2 === 0 && socket !== this.player1) {
             return;
         }
-        if(this.board.moves.length %2 === 0 && socket !== this.player2) {
+        if(this.board.moves().length %2 === 0 && socket !== this.player2) {
             return;
         }
 
@@ -44,7 +44,7 @@ export class Game {
         }
 
         if(this.board.isGameOver()){
-            this.player1.emit(JSON.stringify({
+            this.player1.send(JSON.stringify({
                 type: GAME_OVER,
                 payload: {
                     winner: this.board.turn() === 'w' ? 'black' : 'white',
@@ -52,8 +52,8 @@ export class Game {
             }));
             return; 
         }
-        if(this.board.moves.length % 2 === 0) {
-            this.player2.emit(JSON.stringify({
+        if(this.board.moves().length % 2 === 0) {
+            this.player2.send(JSON.stringify({
                 type: MOVE,
                 payload: {
                     move: move,
@@ -61,7 +61,7 @@ export class Game {
             }));
         }
         else{
-            this.player1.emit(JSON.stringify({
+            this.player1.send(JSON.stringify({
                 type: MOVE,
                 payload: {
                     move: move,
