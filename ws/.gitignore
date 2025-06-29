@@ -3,3 +3,5 @@ dist
 *.tsbuildinfo
 *.js
 *.d.ts
+
+/src/generated/prisma
