@@ -7,18 +7,24 @@ export const Landing = () => {
         <div className="pt-8 max-w-screen-lg">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="flex justify-center">
-                    <img src={"/chessboard.jpeg"} alt="chessboard" className="max-w-96" />
+                    <img src={"/chessboard.jpeg"} className="max-w-96" alt="chessboard" />
                 </div>
                 <div className="pt-16">
                     <div className="flex justify-center">
                         <h1 className="text-4xl font-bold text-white">Play chess online on the #2 Site!</h1>
                     </div>
 
-                    <div className="mt-8 flex justify-center">
+                    <div className="mt-8 flex space-x-5 justify-center">
                         <Button onClick={() => {
-                            navigate("/game")
+                            navigate("/game/random")
                         }} >
                             Play Online
+                        </Button>
+                   
+                          <Button  onClick={() => {
+                            navigate("/login")
+                        }} >
+                            Login
                         </Button>
                     </div>    
                 </div>

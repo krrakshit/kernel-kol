@@ -3,14 +3,20 @@ import { Button } from "../components/Button"
 import { ChessBoard } from "../components/ChessBoard"
 import { useSocket } from "../hooks/useSocket";
 import { Chess } from 'chess.js'
+import { useNavigate, useParams } from "react-router-dom";
 
+// TODO: Move together, there's code repetition here
 export const INIT_GAME = "init_game";
 export const MOVE = "move";
 export const GAME_OVER = "game_over";
 
 export const Game = () => {
     const socket = useSocket();
-    const [chess] = useState(new Chess());
+    const { gameId } = useParams();
+
+    const navigate = useNavigate();
+    // Todo move to store/context
+    const [chess, _setChess] = useState(new Chess());
     const [board, setBoard] = useState(chess.board());
     const [started, setStarted] = useState(false)
 
@@ -20,25 +26,24 @@ export const Game = () => {
         }
         socket.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            let move;
 
             switch (message.type) {
                 case INIT_GAME:
                     setBoard(chess.board());
                     setStarted(true)
+                    navigate(`/game/${message.payload.gameId}`)
                     break;
                 case MOVE:
-                  move = message.payload;
+                    const move = message.payload;
                     chess.move(move);
                     setBoard(chess.board());
-                    console.log("Move made");
                     break;
                 case GAME_OVER:
                     console.log("Game over");
                     break;
             }
         }
-    }, [socket]);
+    }, [chess, socket]);
 
     if (!socket) return <div>Connecting...</div>
 
@@ -50,7 +55,7 @@ export const Game = () => {
                 </div>
                 <div className="col-span-2 bg-slate-900 w-full flex justify-center">
                     <div className="pt-8">
-                        {!started && <Button onClick={() => {
+                        {!started && gameId === "random" && <Button onClick={() => {
                             socket.send(JSON.stringify({
                                 type: INIT_GAME
                             }))
