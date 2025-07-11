@@ -88,7 +88,7 @@ export class GameManager {
 
                 if (!availableGame) {
                     const game = new Game(gameFromDb?.whitePlayerId!, gameFromDb?.blackPlayerId!);
-                    gameFromDb?.moves.forEach((move) => {
+                    gameFromDb?.moves.forEach((move : any) => {
                         if (isPromoting(game.board, move.from as Square, move.to as Square))  {
                             game.board.move({
                                 from: move.from,

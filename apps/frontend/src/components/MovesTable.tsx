@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Square } from 'chess.js';
+import type{ Square }  from 'chess.js';
 interface Move {
   from: Square;
   to: Square;

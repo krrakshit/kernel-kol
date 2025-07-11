@@ -1,33 +1,9 @@
-import { Chess, Color, Move, PieceSymbol, Square } from "chess.js";
+import type { Chess, Color, PieceSymbol, Square } from "chess.js";
 import { useState } from "react";
-import { IMove, MOVE, } from "../screens/Game";
-
-export function isPromoting(chess: Chess, from: Square, to: Square) {
-    if (!from) {
-        return false;
-    }
-
-    const piece = chess.get(from);
-  
-    if (piece?.type !== "p") {
-      return false;
-    }
-  
-    if (piece.color !== chess.turn()) {
-      return false;
-    }
-  
-    if (!["1", "8"].some((it) => to.endsWith(it))) {
-      return false;
-    }
-  
-    return chess
-      .moves({ square: from, verbose: true })
-      .map((it) => it.to)
-      .includes(to);
-}
-
-export const ChessBoard = ({ gameId, started, myColor, chess, board, socket, setBoard, moves, setMoves }: {
+import type { IMove } from "../screens/Game";
+import { MOVE } from "../screens/Game";
+import { isPromoting } from "../hooks/IsPromoting";
+export const ChessBoard = ({ gameId, started, myColor, chess, board, socket, setBoard,setMoves }: {
     myColor: Color, 
     gameId: string,
     started: boolean,
@@ -104,13 +80,14 @@ export const ChessBoard = ({ gameId, started, myColor, chess, board, socket, set
                                     })
                                     setMoves(moves =>[...moves, { from, to: squareRepresentation }]);
                                 } catch(e) {
+                                  console.log("error", e);
 
                                 }
                             }
                         }} key={j} className={`w-16 h-16 ${includeBox([from || ""], j, i) ? "bg-red-400" : includeBox(legalMoves,j,i) ? `${(i+j)%2 === 0 ? 'bg-green_legal' : 'bg-slate_legal'}` : `${(i+j)%2 === 0 ? 'bg-green-500' : 'bg-slate-500'}`}`}>
                             <div className="w-full justify-center flex h-full">
                                 <div className="h-full justify-center flex flex-col">
-                                    {square ? <img className="w-4" src={`/${square?.color === "b" ? square?.type : `${square?.type?.toUpperCase()} copy`}.png`} /> : null} 
+                                    {square ? <img  alt="chesssquare" className="w-4" src={`/${square?.color === "b" ? square?.type : `${square?.type?.toUpperCase()} copy`}.png`} /> : null} 
                                 </div>
                             </div>
                         </div>

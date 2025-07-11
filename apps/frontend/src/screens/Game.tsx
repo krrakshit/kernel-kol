@@ -2,9 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { Button } from "../components/Button"
-import { ChessBoard, isPromoting } from "../components/ChessBoard"
+import { ChessBoard } from "../components/ChessBoard"
+import { isPromoting } from "../hooks/IsPromoting";
 import { useSocket } from "../hooks/useSocket";
-import { Chess, Square } from 'chess.js'
+import type { Square } from 'chess.js'
+import { Chess } from 'chess.js';
 import { useNavigate, useParams } from "react-router-dom";
 import MovesTable from "../components/MovesTable";
 import { useUser } from "@repo/store/useUser";
@@ -88,7 +90,7 @@ export const Game = () => {
                     })
                     setStarted(true)
                     setMoves(message.payload.moves);
-                    message.payload.moves.map(x => {
+                    message.payload.moves.map((x  : IMove)  => {
                         if (isPromoting(chess, x.from, x.to)) {
                             chess.move({...x,  promotion: 'q' })
                         } else {

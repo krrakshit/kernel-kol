@@ -9,7 +9,7 @@ export const Landing = () => {
         <div className="py-8 max-w-screen-xl z-[1]">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3 h-full">
                 <div className="col-span-2 flex justify-center items-center">
-                         <img src={"/chessboard.jpeg"} className="max-w-screen-sm animate-glow" />
+                         <img alt="landing" src={"/chessboard.jpeg"} className="max-w-screen-sm animate-glow" />
                 </div>
                 <div className="pt-16">
                     <div className="flex justify-center">

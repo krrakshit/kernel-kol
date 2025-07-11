@@ -15,7 +15,7 @@ wss.on('connection', function connection(ws, req) {
   gameManager.addUser({socket: ws, id: userId});
 
   ws.on("close", () => {
-    gameManager.removeUser(ws, userId)
+    gameManager.removeUser(ws);
   })
 });
 
