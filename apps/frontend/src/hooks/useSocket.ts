@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { useUser } from "@repo/store/useUser";
 
-const WS_URL = "ws://localhost:8080/ws";
+const WS_URL = "ws://localhost:8080";
 
 export const useSocket = () => {
     const [socket, setSocket] = useState<WebSocket | null>(null);
+    const user = useUser();
 
     useEffect(() => {
-        const ws = new WebSocket(WS_URL);
+        const ws = new WebSocket(`${WS_URL}?token=${user.token}`);
+
         ws.onopen = () => {
-            console.log("WebSocket connection established");
             setSocket(ws);
-        };
+        }
+
         ws.onclose = () => {
-            console.log("WebSocket connection closed");
             setSocket(null);
         }
+
         return () => {
             ws.close();
-        };
-    }, []);
+        }
+    }, [user])
 
-    return socket;
-};
+    return socket;  
+}
